@@ -9,13 +9,10 @@ import (
 
 func main() {
 	user, err := user.Current()
-
 	if err != nil {
 		panic(err)
 	}
-
-	fmt.Printf("Hello %s! This is the MERO programming language!\n",
+	fmt.Printf("Hello %s! This is the Meroo programming language!\n",
 		user.Username)
-	fmt.Printf("Feel free to type in commands\n")
 	repl.Start(os.Stdin, os.Stdout)
 }
