@@ -153,16 +153,12 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 	stmt := &ast.LetStatement{Token: p.curToken}
 
 	if !p.expectPeek(token.IDENT) {
-		msg := fmt.Sprintf("Expected Identifier but found %s", p.peekToken.Type)
-		p.errors = append(p.errors, msg)
 		return nil
 	}
 
 	stmt.Name = &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
 
 	if !p.expectPeek(token.ASSIGN) {
-		msg := fmt.Sprintf("Expected '=' but found %s", p.peekToken.Type)
-		p.errors = append(p.errors, msg)
 		return nil
 	}
 
@@ -172,10 +168,6 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 
 	if p.peekTokenIs(token.SEMICOLON) {
 		p.nextToken()
-	} else {
-		msg := fmt.Sprintf("Expected ';' but found %s", p.peekToken.Type)
-		p.errors = append(p.errors, msg)
-		return nil
 	}
 
 	return stmt
@@ -190,10 +182,6 @@ func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
 
 	if p.peekTokenIs(token.SEMICOLON) {
 		p.nextToken()
-	} else {
-		msg := fmt.Sprintf("Expected ';' but found %s", p.peekToken.Type)
-		p.errors = append(p.errors, msg)
-		return nil
 	}
 
 	return stmt
@@ -241,8 +229,6 @@ func (p *Parser) parseIntegerLiteral() ast.Expression {
 	value, err := strconv.ParseInt(p.curToken.Literal, 0, 64)
 
 	if err != nil {
-		msg := fmt.Sprintf("could not parse %q as integer", p.curToken.Literal)
-		p.errors = append(p.errors, msg)
 		return nil
 	}
 
@@ -314,8 +300,6 @@ func (p *Parser) parseIfExpression() ast.Expression {
 	expression := &ast.IfExpression{Token: p.curToken}
 
 	if !p.expectPeek(token.LPAREN) {
-		msg := fmt.Sprintf("Expected '(' but found %s instead ", p.peekToken.Type)
-		p.errors = append(p.errors, msg)
 		return nil
 	}
 
@@ -323,14 +307,10 @@ func (p *Parser) parseIfExpression() ast.Expression {
 	expression.Condition = p.parseExpression(LOWEST)
 
 	if !p.expectPeek(token.RPAREN) {
-		msg := fmt.Sprintf("Expected ')' but found %s instead ", p.peekToken.Type)
-		p.errors = append(p.errors, msg)
 		return nil
 	}
 
 	if !p.expectPeek(token.LBRACE) {
-		msg := fmt.Sprintf("Expected '{' but found %s instead ", p.peekToken.Type)
-		p.errors = append(p.errors, msg)
 		return nil
 	}
 
@@ -340,8 +320,6 @@ func (p *Parser) parseIfExpression() ast.Expression {
 		p.nextToken()
 
 		if !p.expectPeek(token.LBRACE) {
-			msg := fmt.Sprintf("Expected '{' but found %s instead ", p.peekToken.Type)
-			p.errors = append(p.errors, msg)
 			return nil
 		}
 
@@ -372,16 +350,12 @@ func (p *Parser) parseFunctionLiteral() ast.Expression {
 	lit := &ast.FunctionLiteral{Token: p.curToken}
 
 	if !p.expectPeek(token.LPAREN) {
-		msg := fmt.Sprintf("expected '(' but found %s", p.peekToken.Type)
-		p.errors = append(p.errors, msg)
 		return nil
 	}
 
 	lit.Parameters = p.parseFunctionParameters()
 
 	if !p.expectPeek(token.LBRACE) {
-		msg := fmt.Sprintf("expected '{' but found %s", p.peekToken.Type)
-		p.errors = append(p.errors, msg)
 		return nil
 	}
 
@@ -406,8 +380,6 @@ func (p *Parser) parseFunctionParameters() []*ast.Identifier {
 		identifiers = append(identifiers, ident)
 	}
 	if !p.expectPeek(token.RPAREN) {
-		msg := fmt.Sprintf("expected '}' but found %s", p.peekToken.Type)
-		p.errors = append(p.errors, msg)
 		return nil
 	}
 	return identifiers
