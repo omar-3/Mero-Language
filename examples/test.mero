@@ -1,0 +1,33 @@
+puts("=========> Demo Functions") 
+let x = 10
+let factorial = fn(x) { 
+    if(x < 2){
+        x
+    }
+    else { 
+        x * factorial(x - 1)
+    }
+}
+puts("factorial of 10: ")
+puts(factorial(x))
+
+puts("=========> Demo map") 
+let map = fn(f, arr) {
+    let iter = fn(accumulated, arr) {
+        if (len(arr) == 0) { 
+            accumulated
+        } else 
+        { 
+            iter(push(accumulated, f(first(arr))), rest(arr))
+        }
+    }
+    iter([], arr)
+}
+let square = fn(x) {
+    x * x
+}
+puts("y: ")
+let y = [1,2,3,4,5]
+puts(y)
+puts("y^2: ")
+puts(map(square, y))
