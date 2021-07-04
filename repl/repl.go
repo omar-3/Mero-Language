@@ -51,7 +51,8 @@ func Start(in string, out io.Writer) {
 	io.WriteString(out, lastPopped.Inspect())
 	io.WriteString(out, "\n")
 
-	io.WriteString(out, "----------------------------\n\n")
+	io.WriteString(out, "\n\n\n----------------------------\nByte code\n----------------------------\n\n\n")
+	io.WriteString(out, code.Instructions.String())
 
 }
 
