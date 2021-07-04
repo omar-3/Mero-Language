@@ -1,4 +1,5 @@
 import tkinter as tk
+import tkinter.messagebox as messagebox
 from tkinter import ttk
 from tkinter import filedialog
 import subprocess
@@ -43,7 +44,7 @@ class Root(tk.Tk):
             title="Choose source code file",
             filetypes=(("mero lang source files", "*.mero"), ("all files", "*.*")),
         )
-        tk.messagebox.showinfo(message=f"Loaded file: {self.src_code_file}")
+        messagebox.showinfo(message=f"Loaded file: {self.src_code_file}")
 
     def displayText(self, text):
         self.text_area.configure(state="normal")
@@ -54,7 +55,7 @@ class Root(tk.Tk):
 
     def compileSrc(self):
         if not self.src_code_file:
-            tk.messagebox.showerror(message="No loaded file")
+            messagebox.showerror(message="No loaded file")
             return
         self.quadruples_file = tempfile.mktemp(prefix="mero_lang")
         try:
@@ -64,7 +65,7 @@ class Root(tk.Tk):
                 shell=True
             )
         except Exception as e:
-            tk.messagebox.showerror(
+            messagebox.showerror(
                 message=f"Error: {e}. Make sure you have built the compiler"
             )
             return
@@ -72,13 +73,13 @@ class Root(tk.Tk):
         with open(self.quadruples_file) as fd:
             text = fd.read()
             self.displayText(text)
-        tk.messagebox.showinfo(message="Compilation complete!")
+        messagebox.showinfo(message="Compilation complete!")
 
     def showSrcCode(self):
         if not self.src_code_file:
-            tk.messagebox.showerror(message="No loaded file")
+            messagebox.showerror(message="No loaded file")
             return
-        tk.messagebox.showinfo(message="Displaying source code!")
+        messagebox.showinfo(message="Displaying source code!")
         with open(self.src_code_file) as fd:
             text = fd.read()
             self.displayText(text)
